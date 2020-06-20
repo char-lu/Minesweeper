@@ -1,5 +1,4 @@
 import random
-#test
 
 class Cell:
     def __init__(self, cell_type, row, col, is_flagged=False, is_visible=False):
