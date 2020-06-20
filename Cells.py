@@ -1,4 +1,5 @@
 import random
+#test
 
 class Cell:
     def __init__(self, cell_type, row, col, is_flagged=False, is_visible=False):
@@ -15,7 +16,7 @@ class Cell:
             self.appearance = '▒'
             return True
         else:
-            if  self.appearance != self.cell_type:
+            if self.appearance != self.cell_type:
                 self.appearance = '█'
             return False
             pass
@@ -25,10 +26,11 @@ class Cell:
         self.appearance = self.cell_type
 
     def is_adjacent(self, other_cell):
-        return abs(other_cell.row-self.row) <= 1 and abs(other_cell.col-self.col) <= 1
+        return abs(other_cell.row - self.row) <= 1 and abs(other_cell.col - self.col) <= 1
+
 
 class Board():
-    def __init__(self, height, width, numMines, game_state = 3, numFlags = 0):
+    def __init__(self, height, width, numMines, game_state=3, numFlags=0):
         self.grid = [[Cell(0, row, col) for col in range(width)] for row in range(height)]
         self.numMines = numMines
         self.numFlags = numFlags
@@ -39,14 +41,11 @@ class Board():
         # 3 = Starting
         self.game_state = game_state
 
-
-
-
     def set_board(self, first_clear):
         count = 0
         while count < self.numMines:
-            #self.reveal_board()
-            #print()
+            # self.reveal_board()
+            # print()
             x = random.randint(0, width - 1)
             y = random.randint(0, height - 1)
             random_cell = self.grid[y][x]
@@ -59,7 +58,7 @@ class Board():
         self.game_state = 2
 
     def get_adjacent_cells(self, cell):
-        adjacency = [(i,j) for i in (-1,0,1) for j in (-1,0,1) if not (i == j == 0)]
+        adjacency = [(i, j) for i in (-1, 0, 1) for j in (-1, 0, 1) if not (i == j == 0)]
         x = cell.col
         y = cell.row
         for dx, dy in adjacency:
@@ -75,7 +74,6 @@ class Board():
             else:
                 x.cell_type += 1
 
-
     def show_board(self):
         for x in self.grid:
             for y in x:
@@ -89,15 +87,13 @@ class Board():
         if self.game_state == 3:
             self.set_board(target)
 
-
         if target.cell_type == 'X':
             self.lose()
         else:
             self.flood_fill(row, col)
         self.check_win()
 
-
-    def flood_fill(self, row, col, visited = None):
+    def flood_fill(self, row, col, visited=None):
         if visited is None:
             visited = set()
         target = self.grid[row - 1][col - 1]
@@ -106,11 +102,11 @@ class Board():
         else:
             target.reveal()
 
-        visited.add((row-1, col-1))
+        visited.add((row - 1, col - 1))
         for adjacent in self.get_adjacent_cells(target):
-            if (adjacent.row,adjacent.col) not in visited:
+            if (adjacent.row, adjacent.col) not in visited:
                 if adjacent.cell_type == 0:
-                    self.flood_fill(adjacent.row+1, adjacent.col+1, visited)
+                    self.flood_fill(adjacent.row + 1, adjacent.col + 1, visited)
                 if adjacent.cell_type != 'X':
                     adjacent.reveal()
                     visited.add((adjacent.row, adjacent.col))
@@ -121,7 +117,6 @@ class Board():
         if self.grid[row - 1][col - 1].flag():
             self.numFlags += 1
         self.check_win();
-
 
     def check_win(self):
         if self.numFlags != self.numMines:
@@ -157,11 +152,12 @@ mineNumber = int(input())
 
 board = Board(height, width, mineNumber)
 
+
 def action(input):
     split_input = input.split()
     choice = split_input[0].upper()
     try:
-        if int(split_input[1])<=0 or int(split_input[2])<=0:
+        if int(split_input[1]) <= 0 or int(split_input[2]) <= 0:
             print("as")
             raise IndexError
         elif choice == 'FLAG':
@@ -172,7 +168,6 @@ def action(input):
             raise TypeError
     except IndexError or TypeError:
         print('Invalid action')
-
 
 
 while board.game_state != 0 and board.game_state != 1:
