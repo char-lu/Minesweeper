@@ -31,6 +31,8 @@ class Cell:
 class Board():
     def __init__(self, height, width, numMines, game_state=3, numFlags=0):
         self.grid = [[Cell(0, row, col) for col in range(width)] for row in range(height)]
+        self.height = height
+        self.width = width
         self.numMines = numMines
         self.numFlags = numFlags
         # game state
@@ -45,8 +47,8 @@ class Board():
         while count < self.numMines:
             # self.reveal_board()
             # print()
-            x = random.randint(0, width - 1)
-            y = random.randint(0, height - 1)
+            x = random.randint(0, self.width - 1)
+            y = random.randint(0, self.height - 1)
             random_cell = self.grid[y][x]
             if random_cell.cell_type == 'X' or random_cell.is_adjacent(first_clear):
                 pass
@@ -61,7 +63,7 @@ class Board():
         x = cell.col
         y = cell.row
         for dx, dy in adjacency:
-            if 0 <= (x + dx) < width and 0 <= y + dy < height:  # boundaries check
+            if 0 <= (x + dx) < self.width and 0 <= y + dy < self.height:  # boundaries check
                 yield self.grid[y + dy][x + dx]
 
     def increment_adjacents(self, mine):
@@ -80,7 +82,7 @@ class Board():
             print()
         print()
 
-    def reveal_cell(self, row, col):
+    def clear_cell(self, row, col):
         target = self.grid[row - 1][col - 1]
 
         if self.game_state == 3:
@@ -141,35 +143,3 @@ class Board():
         print('You lost!')
         self.reveal_board()
 
-
-print('Enter height: ', end='')
-height = int(input())
-print('Enter width: ', end='')
-width = int(input())
-print('Enter number of mines: ', end='')
-mineNumber = int(input())
-
-board = Board(height, width, mineNumber)
-
-
-def action(input):
-    split_input = input.split()
-    choice = split_input[0].upper()
-    try:
-        if int(split_input[1]) <= 0 or int(split_input[2]) <= 0:
-            print("as")
-            raise IndexError
-        elif choice == 'FLAG':
-            board.flag_cell(int(split_input[1]), int(split_input[2]))
-        elif choice == 'CLEAR':
-            board.reveal_cell(int(split_input[1]), int(split_input[2]))
-        else:
-            raise TypeError
-    except IndexError or TypeError:
-        print('Invalid action')
-
-
-while board.game_state != 0 and board.game_state != 1:
-    board.show_board()
-    print('What is your action? :', end='')
-    action(input())
