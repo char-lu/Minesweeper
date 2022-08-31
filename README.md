@@ -1,6 +1,13 @@
 # Minesweeper
 During winter break of my freshman year I decided to recreate the game Minesweeper in python as a way to self teach myself the programming language.
 
+When I started the project I had no knowledge of how to program in Python at all. Armed with just knowledge of java and object-oriented programming, I challenged myself to recreate the classic Minesweeper.
+
+Later on I revisited this project whilst interested in AI. I created a solving AI that could solve the game.
+
+![Alt Text](https://i.imgur.com/ljSjXRP.gif)
+
+
 To run the programs you must first have pygame installed. 
 To install pygame run "python -m pip install pygame" in the commandline.
 
